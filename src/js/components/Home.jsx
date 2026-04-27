@@ -1,28 +1,33 @@
-import React from "react";
+import TodoInput from "./TodoInput"
+import TodoList from "./TodoList"
+import Title from "./Title"
+import { useState } from "react"
+import TodoFooter from "./TodoFooter"
 
-//include images into your bundle
-import rigoImage from "../../img/rigo-baby.jpg";
+const Home = () => { 
+	const [TodosFromAPI, setTodosFromAPI] = useState([])
 
-//create your first component
-const Home = () => {
+	function handleAddTodo (todoText) {
+		const newTodo = {id: TodosFromAPI.length + 1 + "", text: todoText}
+		setTodosFromAPI(prevTodos => ([...prevTodos, newTodo]))
+	}
+
+	const handleRemove = (id) => {
+       setTodosFromAPI(TodosFromAPI.filter(todo => todo.id !== id ))
+	}
+ 
 	return (
-		<div className="text-center">
-            
-
-			<h1 className="text-center mt-5">Hello Rigo!</h1>
-			<p>
-				<img src={rigoImage} />
-			</p>
-			<a href="#" className="btn btn-success">
-				If you see this green button... bootstrap is working...
-			</a>
-			<p>
-				Made by{" "}
-				<a href="http://www.4geeksacademy.com">4Geeks Academy</a>, with
-				love!
-			</p>
-		</div>
-	);
-};
+		<div className="d-flex justify-content-center align-items-center bg-light min-vh-100">
+			<div className="todo-wrapper"> 
+				<Title />
+				<div className="todo-card">
+					<TodoInput onAddTodo = {handleAddTodo} /> 
+					<TodoList todos = {TodosFromAPI} onRemoveTodo = {handleRemove} />
+					<TodoFooter todosCount = {TodosFromAPI.length} />
+				</div>
+			</div>
+		</div> 
+	)
+}
 
 export default Home;
